@@ -10,10 +10,10 @@ namespace DBAccess
 {
     public class DbAccess()
     {
-        public async Task<bool> AddNewReading(Reading reading, string DeviceID)
+        public async Task<bool> AddNewReading(Reading reading, string deviceID)
         {
             using var dBContext = new DBContext();
-            var room = await dBContext.Rooms.Include(r => r.Readings).FirstOrDefaultAsync(x => x.DeviceID == DeviceID);
+            var room = await dBContext.Rooms.Include(r => r.Readings).FirstOrDefaultAsync(x => x.DeviceID == deviceID);
             int success;
 
             if (room == null) { return false; }
@@ -24,10 +24,10 @@ namespace DBAccess
             return success == 1;
         }
 
-        public async Task<List<Reading>> GetReadings(int RoomID)
+        public async Task<List<Reading>> GetReadings(int roomID)
         {
             using var dBContext = new DBContext();
-            var room = await dBContext.Rooms.Include(r => r.Readings).FirstOrDefaultAsync(x => x.ID == RoomID);
+            var room = await dBContext.Rooms.Include(r => r.Readings).FirstOrDefaultAsync(x => x.ID == roomID);
 
             if (room == null) { return new List<Reading>(); }
 

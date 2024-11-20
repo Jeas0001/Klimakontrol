@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "V0X9IIGnKLZN8l0VWKwjX5xbMybH/Wa9tPsD6IB+fo3l5YR/aZyB5Bx++UQuFrAWGU8ZLdPA483pyZj/YxZSuA==",
+  "dgSpecHash": "Ixfu4nYTru6p4o8UHjr/VUGooZRa4+BLJWRKu0+0M5y8rUiTZHQsfGFOaDhCejiqQR3B+IlZW8OLWH/RbjVmyw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\jeas0001\\source\\repos\\Minisvendeprøve\\DBAccess\\DBAccess.csproj",
+  "projectFilePath": "C:\\Users\\jeas0001\\source\\repos\\Minisvendeprøve\\Klimakontrol\\DBAccess\\DBAccess.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\jeas0001\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\jeas0001\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
