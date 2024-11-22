@@ -1,4 +1,4 @@
-*.vs
+/*/.vs
 *bin
 *obj
 *appsettings.json
@@ -6,3 +6,4 @@
 /Swaggerapi/.vs
 /BusinessLogic/obj
 /Swaggerapi/obj
+/.vs
