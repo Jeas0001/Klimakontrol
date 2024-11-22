@@ -1,0 +1,8 @@
+*.vs
+*bin
+*obj
+*appsettings.json
+*appsettings.Development.json
+/Swaggerapi/.vs
+/BusinessLogic/obj
+/Swaggerapi/obj
