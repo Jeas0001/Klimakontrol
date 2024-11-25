@@ -50,18 +50,11 @@ namespace BusinessLogic
 
         public async Task<bool> DeleteRoom(int ID)
         {
-            using var dBContext = new DBContext();
-            int succes;
+            DbAccess dbAccess = new DbAccess();
 
-            var room = await dBContext.Rooms.FirstOrDefaultAsync(r => r.ID == ID);
+            bool success = await dbAccess.DeleteRoom(ID);
 
-            if (room == null) { return false; }
-
-            dBContext.Rooms.Remove(room);
-
-            succes = await dBContext.SaveChangesAsync();
-
-            return succes == 1;
+            return success;
         }
 
         public async Task<bool> AddFirm(Firm firm)
