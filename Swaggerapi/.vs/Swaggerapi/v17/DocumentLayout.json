@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "C:\\Users\\jeas0001\\source\\repos\\Minisvendepr\u00F8ve\\Klimakontrol\\Swaggerapi\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{68BA3E7F-2246-491B-987E-3915B205B72A}|Swaggerapi.csproj|c:\\users\\jeas0001\\source\\repos\\minisvendepr\u00F8ve\\klimakontrol\\swaggerapi\\startup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{68BA3E7F-2246-491B-987E-3915B205B72A}|Swaggerapi.csproj|solutionrelative:startup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{68BA3E7F-2246-491B-987E-3915B205B72A}|Swaggerapi.csproj|c:\\users\\jeas0001\\source\\repos\\minisvendepr\u00F8ve\\klimakontrol\\swaggerapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{68BA3E7F-2246-491B-987E-3915B205B72A}|Swaggerapi.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{C5F5458E-C2E1-4F08-8C6C-8758DDD08F86}|..\\BusinessLogic\\BusinessLogic.csproj|c:\\users\\jeas0001\\source\\repos\\minisvendepr\u00F8ve\\klimakontrol\\businesslogic\\blogic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -16,28 +24,54 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Startup.cs",
+              "DocumentMoniker": "C:\\Users\\jeas0001\\source\\repos\\Minisvendepr\u00F8ve\\Klimakontrol\\Swaggerapi\\Startup.cs",
+              "RelativeDocumentMoniker": "Startup.cs",
+              "ToolTip": "C:\\Users\\jeas0001\\source\\repos\\Minisvendepr\u00F8ve\\Klimakontrol\\Swaggerapi\\Startup.cs",
+              "RelativeToolTip": "Startup.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAD0AAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-27T08:29:04.694Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\jeas0001\\source\\repos\\Minisvendepr\u00F8ve\\Klimakontrol\\Swaggerapi\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\jeas0001\\source\\repos\\Minisvendepr\u00F8ve\\Klimakontrol\\Swaggerapi\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAfAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-27T08:26:48.131Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "BLogic.cs",
               "DocumentMoniker": "C:\\Users\\jeas0001\\source\\repos\\Minisvendepr\u00F8ve\\Klimakontrol\\BusinessLogic\\BLogic.cs",
               "RelativeDocumentMoniker": "..\\BusinessLogic\\BLogic.cs",
               "ToolTip": "C:\\Users\\jeas0001\\source\\repos\\Minisvendepr\u00F8ve\\Klimakontrol\\BusinessLogic\\BLogic.cs",
               "RelativeToolTip": "..\\BusinessLogic\\BLogic.cs",
-              "ViewState": "AQIAADMAAAAAAAAAAAAowC8AAAAbAAAA",
+              "ViewState": "AQIAADEAAAAAAAAAAAAgwEEAAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-20T08:26:24.952Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "DbAccess.cs",
               "DocumentMoniker": "C:\\Users\\jeas0001\\source\\repos\\Minisvendepr\u00F8ve\\Klimakontrol\\DBAccess\\DbAccess.cs",
               "RelativeDocumentMoniker": "..\\DBAccess\\DbAccess.cs",
