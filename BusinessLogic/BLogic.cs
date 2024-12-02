@@ -5,11 +5,11 @@ namespace BusinessLogic
 {
     public class BLogic
     {
-        public async Task<bool> AddNewReading(Reading reading, string deviceID)
+        public async Task<bool> AddNewReading(Reading reading, int roomID)
         {
             DbAccess dBAccess = new DbAccess();
             bool success;
-            success = await dBAccess.AddNewReading(reading, deviceID);
+            success = await dBAccess.AddNewReading(reading, roomID);
             return success;
         }
 

@@ -10,10 +10,10 @@ namespace DBAccess
 {
     public class DbAccess()
     {
-        public async Task<bool> AddNewReading(Reading reading, string deviceID)
+        public async Task<bool> AddNewReading(Reading reading, int roomID)
         {
             using var dBContext = new DBContext();
-            var room = await dBContext.Rooms.Include(r => r.Readings).FirstOrDefaultAsync(x => x.DeviceID == deviceID);
+            var room = await dBContext.Rooms.Include(r => r.Readings).FirstOrDefaultAsync(x => x.ID == roomID);
             int success;
 
             if (room == null) { return false; }
