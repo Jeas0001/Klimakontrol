@@ -9,5 +9,7 @@
         public int CO2Level { get; set; }
 
         public double Humidity { get; set; }
+
+        public int UnixTime { get; set; }
     }
 }
