@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DBAccess.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20241113100519_init")]
+    [Migration("20241211112311_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -60,6 +60,9 @@ namespace DBAccess.Migrations
 
                     b.Property<double>("Temp")
                         .HasColumnType("float");
+
+                    b.Property<int>("UnixTime")
+                        .HasColumnType("int");
 
                     b.HasKey("ID");
 

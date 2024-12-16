@@ -52,6 +52,7 @@ namespace DBAccess.Migrations
                     Temp = table.Column<double>(type: "float", nullable: false),
                     CO2Level = table.Column<int>(type: "int", nullable: false),
                     Humidity = table.Column<double>(type: "float", nullable: false),
+                    UnixTime = table.Column<int>(type: "int", nullable: false),
                     RoomID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>

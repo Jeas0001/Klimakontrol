@@ -45,7 +45,7 @@ namespace DBAccess
                 if (ro.DeviceID == room.DeviceID) { return false; }
             }
 
-            rooms.Add(room);
+            dBContext.Add(room);
             success = await dBContext.SaveChangesAsync();
 
             return success == 1;

@@ -58,6 +58,9 @@ namespace DBAccess.Migrations
                     b.Property<double>("Temp")
                         .HasColumnType("float");
 
+                    b.Property<int>("UnixTime")
+                        .HasColumnType("int");
+
                     b.HasKey("ID");
 
                     b.HasIndex("RoomID");
