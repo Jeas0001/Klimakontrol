@@ -1,0 +1,43 @@
+﻿@using Models;
+
+@inject APIService APIService
+@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<h3>Sensor data for rum 1</h3>
+
+@if (readings == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Temperature</th>
+                <th>Humidity</th>
+                <th>CO2-Level</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@lastReading.Temp</td>
+                <td>@lastReading.Humidity</td>
+                <td>@lastReading.CO2Level</td>
+            </tr>
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Reading>? readings;
+    private Reading? lastReading;
+
+    protected override async Task OnInitializedAsync()
+    {
+        readings = await APIService.GetSensorData(1);
+        lastReading = readings[readings.Count - 1];
+    }
+}

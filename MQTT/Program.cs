@@ -28,6 +28,13 @@ class Program
             .WithCleanSession()
             .Build();
 
+        //Room room = new Room();
+        //room.Roomnr = "qwdfg";
+        //room.Readings = new List<Reading>();
+        //room.DeviceID = "1234567890dcfghj";
+        //BLogic bLogic = new BLogic();
+        //Console.Out.WriteLine(await bLogic.AddNewRoom(room));
+
         // Connect to MQTT broker
         var connectResult = await mqttClient.ConnectAsync(options);
 

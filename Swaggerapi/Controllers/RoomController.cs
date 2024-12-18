@@ -5,7 +5,7 @@ using Models;
 namespace Swaggerapi.Controllers
 {
     [ApiController]
-    [Route("api/room/[controller]")]
+    [Route("api/[controller]")]
     public class RoomController : Controller
     {
         [HttpPost]
@@ -17,6 +17,14 @@ namespace Swaggerapi.Controllers
             return Ok();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetRooms()
+        {
+            BLogic bLogic = new BLogic();
+            var rooms = await bLogic.GetRooms();
+            if (rooms != null) { return Ok(rooms); } else { return BadRequest(new { error = "Cant find any rooms" }); }
+        }
+
         [HttpPost("reading/{roomID}")]
         public async Task<IActionResult> AddReading([FromBody] Reading reading, int roomID = 0)
         {
@@ -26,7 +34,7 @@ namespace Swaggerapi.Controllers
             return Ok();
         }
 
-        [HttpGet]
+        [HttpGet("readings/{roomID}")]
         public async Task<IActionResult> ReadRoom(int roomID)
         {
             BLogic bLogic = new BLogic();
