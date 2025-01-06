@@ -7,3 +7,4 @@
 /BusinessLogic/obj
 /Swaggerapi/obj
 /.vs
+*.cs

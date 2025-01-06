@@ -1,6 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\BusinessLogic",
+    "\\Swaggerapi"
   ],
+  "SelectedNode": "\\BusinessLogic\\BusinessLogic.csproj",
   "PreviewInSolutionExplorer": false
 }

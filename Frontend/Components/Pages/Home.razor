@@ -23,12 +23,13 @@ else
         </thead>
         <tbody>
             <tr>
-                <td>@lastReading.Temp</td>
-                <td>@lastReading.Humidity</td>
+                <td>@lastReading.Temp C</td>
+                <td>@lastReading.Humidity %</td>
                 <td>@lastReading.CO2Level</td>
             </tr>
         </tbody>
     </table>
+    <Graph Data="@readings" />
 }
 
 @code {
@@ -39,5 +40,7 @@ else
     {
         readings = await APIService.GetSensorData(1);
         lastReading = readings[readings.Count - 1];
+        lastReading.Humidity = lastReading.Humidity / 100;
+        lastReading.Temp = lastReading.Temp / 100;
     }
 }
