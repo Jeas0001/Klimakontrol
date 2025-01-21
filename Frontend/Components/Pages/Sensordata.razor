@@ -1,0 +1,173 @@
+﻿@using ApexCharts;
+@using Blazor_ApexCharts;
+@using Models;
+
+@inject APIService APIService
+
+@page "/sensordata/{roomId:int}"
+@rendermode InteractiveServer
+
+<PageTitle>Sensor Data</PageTitle>
+
+@if (readingsAPI == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <h3>Sensor data for rum @roomNr</h3>
+       <table class="table">
+           <thead>
+              <tr>
+                   <th>Temperature</th>
+                    <th>Humidity</th>
+                    <th>CO2-Level</th>
+                 </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@lastReading.Temp C</td>
+                    <td>@lastReading.Humidity %</td>
+                    <td>@lastReading.CO2Level</td>
+                </tr>
+            </tbody>
+        </table>
+    <div>
+        <ApexChart TItem="FrontendReading"
+                   Title="Temperature/Humidity"
+                   XAxisType="XAxisType.Datetime"
+                   Height="400"
+                   Options="@options1"
+                   @ref=@chart>
+
+
+            <ApexPointSeries TItem="FrontendReading"
+                             Items="@_readings"
+                             Name="Temperature"
+                             SeriesType="SeriesType.Line"
+                             XValue="@(e => e.Date)"
+                             YValue="@(e => (decimal)e.Temp)"
+                             OrderBy="e=>e.X" />
+
+            <ApexPointSeries TItem="FrontendReading"
+                             Items="@_readings"
+                             Name="Humidity %"
+                             SeriesType="SeriesType.Line"
+                             XValue="@(e => e.Date)"
+                             YValue="@(e => (decimal)e.Humidity)"
+                             OrderBy="e=>e.X" />
+
+        </ApexChart>
+
+        <ApexChart TItem="FrontendReading"
+                   Title="CO2 Level"
+                   XAxisType="XAxisType.Datetime"
+                   Height="400"
+                   Options="@options2">
+
+            <ApexPointSeries TItem="FrontendReading"
+                             Items="@_readings"
+                             Name="CO2 Level"
+                             SeriesType="SeriesType.Line"
+                             XValue="@(e => e.Date)"
+                             YValue="@(e => e.CO2Level)"
+                             OrderBy="e=>e.X" />
+
+        </ApexChart>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int roomId { get; set; }
+
+    private List<Reading>? readingsAPI;
+    private List<FrontendReading> _readings;
+    private Reading? lastReading;
+    private ApexChart<FrontendReading> chart;
+    private ApexChartOptions<FrontendReading> options1;
+    private ApexChartOptions<FrontendReading> options2;
+    private int roomNr;
+
+    protected override async Task OnInitializedAsync()
+    {
+        options1 = new ApexChartOptions<FrontendReading>();
+        options2 = new ApexChartOptions<FrontendReading>();
+        chart = new ApexChart<FrontendReading>();
+
+        _readings = new List<FrontendReading>();
+        roomNr = roomId;
+
+        await APICall();
+        Graph();
+    }
+
+    public async void ChangeRoom(ChangeEventArgs e)
+    {
+        if (e.Value != null && int.TryParse(e.Value.ToString(), out _))
+        {
+            roomNr = Convert.ToInt32(e.Value);
+            await APICall();
+        }
+    }
+
+    private async Task APICall()
+    {
+        readingsAPI = await APIService.GetSensorData(roomNr);
+        lastReading = readingsAPI[readingsAPI.Count - 1];
+        lastReading.Humidity = lastReading.Humidity / 100;
+        lastReading.Temp = lastReading.Temp / 100;
+
+        UnixTimeToDateTime(readingsAPI);
+    }
+
+    private void Graph()
+    {
+        const string groupName = "SyncGroup";
+        options1.Yaxis = new List<YAxis>();
+        options2.Yaxis = new List<YAxis>();
+
+        options1.Chart = new Chart { Group = groupName };
+        options1.Yaxis.Add(new YAxis
+            {
+                Title = new AxisTitle { Text = "Temperature" },
+                DecimalsInFloat = 2,
+                SeriesName = "Temperature",
+            });
+
+        options1.Yaxis.Add(new YAxis
+            {
+                Title = new AxisTitle { Text = "Humidity" },
+                DecimalsInFloat = 2,
+                SeriesName = "Humidity %",
+                Opposite = true
+            });
+
+        options2.Chart = new Chart { Group = groupName };
+        options2.Yaxis.Add(new YAxis
+            {
+                Title = new AxisTitle { Text = "CO2 Level" },
+                DecimalsInFloat = 0,
+                SeriesName = "CO2 Level",
+            });
+        options2.Chart.Toolbar = new Toolbar { Show = false };
+
+    }
+
+    private void UnixTimeToDateTime(List<Reading> readings)
+    {
+        foreach (var item in readings)
+        {
+            FrontendReading reading = new FrontendReading();
+
+            reading.ID = item.ID;
+            reading.CO2Level = item.CO2Level;
+            reading.Temp = Math.Round((item.Temp), 2);
+            reading.Humidity = Math.Round((item.Humidity), 2);
+            reading.Date = DateTimeOffset.FromUnixTimeSeconds(item.UnixTime).DateTime;
+            if (reading.Temp > 100) { reading.Temp = Math.Round((item.Temp / 100), 2); }
+            if (reading.Humidity > 100) { reading.Humidity = Math.Round((item.Humidity / 100), 2); }
+            _readings.Add(reading);
+        }
+    }
+}
