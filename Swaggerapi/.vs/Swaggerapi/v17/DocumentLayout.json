@@ -7,17 +7,13 @@
       "RelativeMoniker": "D:0:0:{68BA3E7F-2246-491B-987E-3915B205B72A}|Swaggerapi.csproj|solutionrelative:controllers\\roomcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C5F5458E-C2E1-4F08-8C6C-8758DDD08F86}|..\\BusinessLogic\\BusinessLogic.csproj|c:\\users\\jeas0001\\source\\repos\\minisvendepr\u00F8ve\\klimakontrol\\businesslogic\\blogic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{74E1DD5E-A96A-4A44-9188-20EE91B1CF3A}|..\\MQTT\\MQTT.csproj|c:\\users\\jeas0001\\source\\repos\\minisvendepr\u00F8ve\\klimakontrol\\mqtt\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{5AFFA07C-26D3-4270-9B01-ACEE361AF6FE}|..\\DBAccess\\DBAccess.csproj|c:\\users\\jeas0001\\source\\repos\\minisvendepr\u00F8ve\\klimakontrol\\dbaccess\\dbaccess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{74E1DD5E-A96A-4A44-9188-20EE91B1CF3A}|..\\MQTT\\MQTT.csproj|c:\\users\\jeas0001\\source\\repos\\minisvendepr\u00F8ve\\klimakontrol\\mqtt\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{68BA3E7F-2246-491B-987E-3915B205B72A}|Swaggerapi.csproj|C:\\Users\\jeas0001\\source\\repos\\Minisvendepr\u00F8ve\\Klimakontrol\\Swaggerapi\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{68BA3E7F-2246-491B-987E-3915B205B72A}|Swaggerapi.csproj|solutionrelative:properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{C5F5458E-C2E1-4F08-8C6C-8758DDD08F86}|..\\BusinessLogic\\BusinessLogic.csproj|c:\\users\\jeas0001\\source\\repos\\minisvendepr\u00F8ve\\klimakontrol\\businesslogic\\blogic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{68BA3E7F-2246-491B-987E-3915B205B72A}|Swaggerapi.csproj|C:\\Users\\jeas0001\\source\\repos\\Minisvendepr\u00F8ve\\Klimakontrol\\Swaggerapi\\swaggerapi.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
@@ -56,7 +52,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 7,
               "Title": "Reading.cs",
               "DocumentMoniker": "C:\\Users\\jeas0001\\source\\repos\\Minisvendepr\u00F8ve\\Klimakontrol\\Models\\Reading.cs",
               "RelativeDocumentMoniker": "..\\Models\\Reading.cs",
@@ -68,19 +64,19 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\jeas0001\\source\\repos\\Minisvendepr\u00F8ve\\Klimakontrol\\MQTT\\Program.cs",
               "RelativeDocumentMoniker": "..\\MQTT\\Program.cs",
               "ToolTip": "C:\\Users\\jeas0001\\source\\repos\\Minisvendepr\u00F8ve\\Klimakontrol\\MQTT\\Program.cs",
               "RelativeToolTip": "..\\MQTT\\Program.cs",
-              "ViewState": "AQIAADQAAAAAAAAAAAAgwF4AAAApAAAA",
+              "ViewState": "AQIAAC4AAAAAAAAAAAAgwF4AAAApAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-12-09T09:28:28.757Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 5,
               "Title": "DBContext.cs",
               "DocumentMoniker": "C:\\Users\\jeas0001\\source\\repos\\Minisvendepr\u00F8ve\\Klimakontrol\\DBAccess\\DBContext.cs",
               "RelativeDocumentMoniker": "..\\DBAccess\\DBContext.cs",
@@ -92,7 +88,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 6,
               "Title": "Room.cs",
               "DocumentMoniker": "C:\\Users\\jeas0001\\source\\repos\\Minisvendepr\u00F8ve\\Klimakontrol\\Models\\Room.cs",
               "RelativeDocumentMoniker": "..\\Models\\Room.cs",
@@ -110,14 +106,14 @@
               "RelativeDocumentMoniker": "Controllers\\RoomController.cs",
               "ToolTip": "C:\\Users\\jeas0001\\source\\repos\\Minisvendepr\u00F8ve\\Klimakontrol\\Swaggerapi\\Controllers\\RoomController.cs",
               "RelativeToolTip": "Controllers\\RoomController.cs",
-              "ViewState": "AQIAABUAAAAAAAAAAAAUwCQAAAAmAAAA",
+              "ViewState": "AQIAAAIAAAAAAAAAAAAqwCQAAAAmAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-27T08:39:03.296Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 8,
               "Title": "Startup.cs",
               "DocumentMoniker": "C:\\Users\\jeas0001\\source\\repos\\Minisvendepr\u00F8ve\\Klimakontrol\\Swaggerapi\\Startup.cs",
               "RelativeDocumentMoniker": "Startup.cs",
@@ -129,7 +125,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 9,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\jeas0001\\source\\repos\\Minisvendepr\u00F8ve\\Klimakontrol\\Swaggerapi\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
@@ -141,7 +137,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "BLogic.cs",
               "DocumentMoniker": "C:\\Users\\jeas0001\\source\\repos\\Minisvendepr\u00F8ve\\Klimakontrol\\BusinessLogic\\BLogic.cs",
               "RelativeDocumentMoniker": "..\\BusinessLogic\\BLogic.cs",
@@ -159,13 +155,13 @@
               "RelativeDocumentMoniker": "..\\DBAccess\\DbAccess.cs",
               "ToolTip": "C:\\Users\\jeas0001\\source\\repos\\Minisvendepr\u00F8ve\\Klimakontrol\\DBAccess\\DbAccess.cs",
               "RelativeToolTip": "..\\DBAccess\\DbAccess.cs",
-              "ViewState": "AQIAABMAAAAAAAAAAAAgwCUAAAAJAAAA",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAACUAAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-20T08:25:05.928Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 4,
               "Title": "Swaggerapi",
               "DocumentMoniker": "C:\\Users\\jeas0001\\source\\repos\\Minisvendepr\u00F8ve\\Klimakontrol\\Swaggerapi\\Swaggerapi.csproj",
               "RelativeDocumentMoniker": "Swaggerapi.csproj",
@@ -174,18 +170,6 @@
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
               "WhenOpened": "2024-12-18T11:41:31.596Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "launchSettings.json",
-              "DocumentMoniker": "C:\\Users\\jeas0001\\source\\repos\\Minisvendepr\u00F8ve\\Klimakontrol\\Swaggerapi\\Properties\\launchSettings.json",
-              "RelativeDocumentMoniker": "Properties\\launchSettings.json",
-              "ToolTip": "C:\\Users\\jeas0001\\source\\repos\\Minisvendepr\u00F8ve\\Klimakontrol\\Swaggerapi\\Properties\\launchSettings.json",
-              "RelativeToolTip": "Properties\\launchSettings.json",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAwAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-12-18T11:41:41.199Z"
             }
           ]
         }

@@ -20,5 +20,12 @@ namespace Frontend
             if (response == null) { return new List<Reading>(); }
             return response;
         }
+
+        public async Task<List<Room>> GetRooms()
+        {
+            var response = await _httpClient.GetFromJsonAsync<List<Room>>($"Room");
+            if (response == null) { return new List<Room>(); }
+            return response;
+        }
     }
 }

@@ -4,17 +4,24 @@
 
 @inject APIService APIService
 @page "/"
+@rendermode InteractiveServer
 
 <PageTitle>Home</PageTitle>
 
-<h3>Sensor data for rum 1</h3>
 
-@if (readings == null)
+@if (readingsAPI == null && roomsAPI == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
+        <select @onchange="@ChangeRoom">
+            @foreach (var item in roomsAPI)
+        {
+            <option value="@item.ID">@item.Roomnr</option>
+        }
+        </select>
+    <h3>Sensor data for rum @roomNr</h3>
     <table class="table">
         <thead>
             <tr>
@@ -31,88 +38,140 @@ else
             </tr>
         </tbody>
     </table>
-    <DemoContainer>
-        <ApexChart TItem="Reading" Title="Orders Value"
+    <div>
+        <ApexChart TItem="FrontendReading"
+                   Title="Temperature/Humidity"
                    XAxisType="XAxisType.Datetime"
-                   Options="options">
+                   Height="400"
+                   Options="@options1"
+                   @ref=@chart>
 
-            <ApexPointSeries TItem="Reading"
-                             Items="readings"
-                             Name="Net Value"
+
+            <ApexPointSeries TItem="FrontendReading"
+                             Items="@_readings"
+                             Name="Temperature"
                              SeriesType="SeriesType.Line"
-                             XValue="@(e => e.UnixTime.)"
-                             YAggregate="@(e => e.Sum(e => e.NetValue))"
+                             XValue="@(e => e.Date)"
+                             YValue="@(e => (decimal)e.Temp)"
                              OrderBy="e=>e.X" />
 
-            <ApexPointSeries TItem="Reading"
-                             Items="SampleData.GetOrders()"
-                             Name="Gross Value"
+            <ApexPointSeries TItem="FrontendReading"
+                             Items="@_readings"
+                             Name="Humidity %"
                              SeriesType="SeriesType.Line"
-                             XValue="@(e => e.OrderDate.FirstDayOfMonth())"
-                             YAggregate="@(e => e.Sum(e => e.GrossValue))"
+                             XValue="@(e => e.Date)"
+                             YValue="@(e => (decimal)e.Humidity)"
                              OrderBy="e=>e.X" />
+
         </ApexChart>
-    </DemoContainer>
+
+        <ApexChart TItem="FrontendReading"
+                   Title="CO2 Level"
+                   XAxisType="XAxisType.Datetime"
+                   Height="400"
+                   Options="@options2">
+
+            <ApexPointSeries TItem="FrontendReading"
+                             Items="@_readings"
+                             Name="CO2 Level"
+                             SeriesType="SeriesType.Line"
+                             XValue="@(e => e.Date)"
+                             YValue="@(e => e.CO2Level)"
+                             OrderBy="e=>e.X" />
+
+        </ApexChart>
+    </div>
 }
 
 @code {
-    private List<Reading>? readings;
+    private List<Reading>? readingsAPI;
+    private List<Room>? roomsAPI;
+    private List<FrontendReading> _readings;
     private Reading? lastReading;
-    private ApexChartOptions<Reading> options = new ApexCharts.ApexChartOptions<Reading>();
+    private ApexChart<FrontendReading> chart;
+    private ApexChartOptions<FrontendReading> options1;
+    private ApexChartOptions<FrontendReading> options2;
+    private int roomNr = 1;
 
     protected override async Task OnInitializedAsync()
     {
-        readings = await APIService.GetSensorData(1);
-        lastReading = readings[readings.Count - 1];
+        options1 = new ApexChartOptions<FrontendReading>();
+        options2 = new ApexChartOptions<FrontendReading>();
+        chart = new ApexChart<FrontendReading>();
+
+        _readings = new List<FrontendReading>();
+
+        await APICall();
+        Graph();
+    }
+
+    public async void ChangeRoom(ChangeEventArgs e)
+    {
+        if (e.Value != null && int.TryParse(e.Value.ToString(), out _))
+        {
+            roomNr = Convert.ToInt32(e.Value);
+            await APICall();
+        }
+    }
+
+    private async Task APICall()
+    {
+        roomsAPI = await APIService.GetRooms();
+        readingsAPI = await APIService.GetSensorData(roomNr);
+        lastReading = readingsAPI[readingsAPI.Count - 1];
         lastReading.Humidity = lastReading.Humidity / 100;
         lastReading.Temp = lastReading.Temp / 100;
 
-        options.Debug = true;
-        options.ForecastDataPoints = new ForecastDataPoints
+        UnixTimeToDateTime(readingsAPI);
+    }
+
+    private void Graph()
+    {
+        const string groupName = "SyncGroup";
+        options1.Yaxis = new List<YAxis>();
+        options2.Yaxis = new List<YAxis>();
+
+        options1.Chart = new Chart { Group = groupName };
+        options1.Yaxis.Add(new YAxis
             {
-                Count = 3,
-                DashArray = 4,
-                FillOpacity = 0.5,
-            };
-        options.Tooltip = new ApexCharts.Tooltip { X = new TooltipX { Format = @"MMMM \ yyyy" } };
-        options.Subtitle = new Subtitle { OffsetY = 15, Text = "DateTime sample with options" };
-        options.Tooltip = new ApexCharts.Tooltip
-            {
-                Y = new TooltipY
-                {
-                    Title = new TooltipYTitle { Formatter = @"function(name) { return name + ':' }" },
-                    Formatter = @"function(value, { series, seriesIndex, dataPointIndex, w }) { return '$' + value }"
-                },
-            };
-        options.Xaxis = new XAxis
-            {
-                Title = new AxisTitle
-                {
-                    OffsetY = 5,
-                    Text = "Month",
-                    Style = new AxisTitleStyle { FontSize = "14px", Color = "lightgrey" }
-                },
-                AxisBorder = new AxisBorder
-                {
-                    Height = 2
-                }
-            };
-        options.Yaxis = new List<YAxis>();
-        options.Yaxis.Add(new YAxis
-            {
-                DecimalsInFloat = 0,
-                Labels = new YAxisLabels { Rotate = -45, Style = new AxisLabelStyle { FontSize = "10px" } },
-                Title = new AxisTitle { Text = "Value", Style = new AxisTitleStyle { FontSize = "14px", Color = "lightgrey" } }
+                Title = new AxisTitle { Text = "Temperature" },
+                DecimalsInFloat = 2,
+                SeriesName = "Temperature",
             });
 
-        options.Annotations = new Annotations { Yaxis = new List<AnnotationsYAxis>() };
-        options.Annotations.Yaxis.Add(new AnnotationsYAxis
+        options1.Yaxis.Add(new YAxis
             {
-                Y = 50000,
-                BorderWidth = 2,
-                StrokeDashArray = 5,
-                BorderColor = "red",
-                Label = new Label { Text = "Monthly Target" }
+                Title = new AxisTitle { Text = "Humidity" },
+                DecimalsInFloat = 2,
+                SeriesName = "Humidity %",
+                Opposite = true
             });
+
+        options2.Chart = new Chart { Group = groupName };
+        options2.Yaxis.Add(new YAxis
+            {
+                Title = new AxisTitle { Text = "CO2 Level" },
+                DecimalsInFloat = 0,
+                SeriesName = "CO2 Level",
+            });
+        options2.Chart.Toolbar = new Toolbar { Show = false };
+
+    }
+
+    private void UnixTimeToDateTime(List<Reading> readings)
+    {
+        foreach (var item in readings)
+        {
+            FrontendReading reading = new FrontendReading();
+
+            reading.ID = item.ID;
+            reading.CO2Level = item.CO2Level;
+            reading.Temp = Math.Round((item.Temp), 2);
+            reading.Humidity = Math.Round((item.Humidity), 2);
+            reading.Date = DateTimeOffset.FromUnixTimeSeconds(item.UnixTime).DateTime;
+            if (reading.Temp > 100) { reading.Temp = Math.Round((item.Temp / 100), 2); }
+            if (reading.Humidity > 100) { reading.Humidity = Math.Round((item.Humidity / 100), 2); }
+            _readings.Add(reading);
+        }
     }
 }
