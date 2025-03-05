@@ -11,45 +11,159 @@
 <PageTitle>Home</PageTitle>
 
 
-@if (roomsAPI == null)
+@if (roomsAPI == null || roomsAPI.Count == 0)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
+    <button type="button" class="btn btn-primary" @onclick="CreateRoom">Create Room</button>
     <table class="table">
         <thead>
             <tr>
                 <th>Room number</th>
+                <th>Device Id</th>
+                <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in roomsAPI)
             {
                 <tr>
-                    <td style="cursor:pointer" @onclick="(() =>  GoToRoom(item.ID))">@item.Roomnr</td>
+                    <td role="button" @onclick="(() =>  GoToRoom(item.ID))">@item.Roomnr</td>
+                    <td role="button" @onclick="(() =>  GoToRoom(item.ID))">@item.DeviceID</td>
+                    <td><button type="button" class="btn btn-info" @onclick="(() =>  OpenPopup(item, true))">Edit</button></td>
+                    <td><button type="button" class="btn btn-danger" @onclick="(() =>  DeleteRoom(item.ID))">Delete</button></td>
                 </tr>
             }
         </tbody>
     </table>
+    @if (isPopupVisible)
+    {
+        <div class="modal fade show" style="display: block;" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">@modalTitle</h5>
+                        <button type="button" class="btn-close" @onclick="ClosePopup"></button>
+                    </div>
+                    <div class="modal-body">
+                        <EditForm Model="selectedRoom" OnValidSubmit="@RoomSubmit"
+                                  class="needs-validation" novalidate>
+                            <DataAnnotationsValidator />
+                            <ValidationSummary />
+                            <div class="mb-3">
+                                <label class="form-label">Sensor ID</label>
+                                <InputText @bind-Value="selectedRoom.DeviceID"
+                                           class="form-control" id="DeviceID" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="summary" class="form-label">Room name</label>
+                                <InputText @bind-Value="selectedRoom.Roomnr"
+                                           class="form-control" id="Roomnr" />
+                            </div>
+                            <button type="submit" class="btn btn-primary">@modalButtonText</button>
+                        </EditForm>
+                    </div>
+                    @if (modalAlert)
+                    {
+                        <div class="alert @modalAlertStatus" role="alert">@modalErrorText</div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="modal-backdrop fade show"></div>
+    }
 }
 
 @code {
     private List<Room>? roomsAPI;
 
+    private bool isPopupVisible, isDeletePopupVisible = false;
+    private string modalTitle = "Create Room";
+    private string modalButtonText = "Create";
+    private string modalErrorMode = "created";
+    private string modalErrorText = "Your room was created";
+    private string modalAlertStatus = "alert-success";
+    private bool isEditMode = false;
+    private Room selectedRoom = new Room();
+
+    private bool modalAlert = false;
+
     protected override async Task OnInitializedAsync()
     {
-
+        roomsAPI = new List<Room>();
 
         await APICall();
     }
 
-    public void GoToRoom(int roomId)
+    private void GoToRoom(int roomId)
     {
         if (roomId != 0)
         {
             navigationManager.NavigateTo($"/sensordata/{roomId}");
         }
+    }
+
+    private async void DeleteRoom(int roomID)
+    {
+        if (roomID != 0)
+        {
+            await APIService.DeleteRoom(roomID);
+            await APICall();
+            StateHasChanged();
+        }
+    }
+
+    private void CreateRoom()
+    {
+        selectedRoom = new Room();
+
+        OpenPopup(selectedRoom, false);
+    }
+
+    private void OpenPopup(Room room, bool isEdit)
+    {
+        selectedRoom = room;
+        isEditMode = isEdit;
+        modalTitle = isEdit ? "Edit Room" : "Create Room";
+        modalButtonText = isEdit ? "Save changes" : "Create";
+        modalErrorMode = isEdit ? "edited" : "created";
+
+        modalAlert = false;
+        isPopupVisible = true;
+        StateHasChanged();
+    }
+
+    private void ClosePopup()
+    {
+        // Close the popup
+        isPopupVisible = false;
+        StateHasChanged();
+    }
+
+    public async void RoomSubmit()
+    {
+        bool flag = false;
+
+        if (isEditMode)
+        {
+            flag = await APIService.EditRoom(selectedRoom.ID, selectedRoom);
+        }
+        else
+        {
+            flag = await APIService.CreateRoom(selectedRoom);
+        }
+
+        modalErrorText = flag ? $"Your room was {modalErrorMode}" : $"Your room was not {modalErrorMode}";
+        modalAlertStatus = flag ? "alert-success" : "alert-danger";
+        modalAlert = true;
+
+        StateHasChanged();
+        if (flag) { ClosePopup(); }
+        await APICall();
+        StateHasChanged();
     }
 
     private async Task APICall()

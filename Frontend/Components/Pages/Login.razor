@@ -1,0 +1,39 @@
+﻿@using Models;
+
+@page "/login"
+@rendermode InteractiveServer
+
+<PageTitle>Login</PageTitle>
+
+<h1>Login</h1>
+
+<EditForm Model="currentUser" OnValidSubmit="@UserLogin"
+          class="needs-validation" novalidate>
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="mb-3">
+        <label class="form-label">Sensor ID</label>
+        <InputText @bind-Value="currentUser.UserName"
+                   class="form-control" id="UserName" />
+    </div>
+    <div class="mb-3">
+        <label for="summary" class="form-label">Room name</label>
+        <InputText @bind-Value="currentUser.Password"
+                   class="form-control" id="Password" />
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+</EditForm>
+
+@code {
+    private User currentUser = new User();
+
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
+
+    private async void UserLogin()
+    {
+        
+    }
+}

@@ -41,5 +41,23 @@ namespace Swaggerapi.Controllers
             var readings = await bLogic.GetReadings(roomID);
             if (readings != null) { return Ok(readings); } else { return BadRequest(new { error = "Room does not exist" }); }
         }
+
+        [HttpPut("{roomID}")]
+        public async Task<IActionResult> EditRoom([FromBody] Room room, int roomID)
+        {
+            BLogic bLogic = new BLogic();
+            if (room.DeviceID == null || room.Roomnr == null || roomID == 0) { return BadRequest(new { error = "Not enough infomation" }); }
+            bool success = await bLogic.EditRoom(roomID, room);
+            if (!success) { return BadRequest(new { error = "Something went wrong" }); }
+            return Ok();
+        }
+
+        [HttpDelete("{roomID}")]
+        public async Task<IActionResult> DeleteRoom(int roomID)
+        {
+            BLogic bLogic = new BLogic();
+            bool success = await bLogic.DeleteRoom(roomID);
+            if (!success) { return BadRequest(new { error = "Room does not exist" }); } else { return Ok(); }
+        }
     }
 }

@@ -9,20 +9,29 @@
 
 <PageTitle>Sensor Data</PageTitle>
 
-@if (readingsAPI == null)
+<h3>Sensor data for rum @roomNr</h3>
+
+@if (currentRoom.DeviceID != null && currentRoom.Roomnr != null && currentRoom.ID != 0)
+{
+    <button type="button" class="btn btn-primary" @onclick="OpenPopup">Edit Room</button>
+}
+
+@if (readingsAPI == null || readingsAPI.Count == 0)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
-    <h3>Sensor data for rum @roomNr</h3>
-       <table class="table">
-           <thead>
-              <tr>
-                   <th>Temperature</th>
+
+    @if (lastReading.Temp != null || lastReading.Humidity != null || lastReading.CO2Level != null)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Temperature</th>
                     <th>Humidity</th>
                     <th>CO2-Level</th>
-                 </tr>
+                </tr>
             </thead>
             <tbody>
                 <tr>
@@ -32,6 +41,7 @@ else
                 </tr>
             </tbody>
         </table>
+    }
     <div>
         <ApexChart TItem="FrontendReading"
                    Title="Temperature/Humidity"
@@ -76,6 +86,42 @@ else
         </ApexChart>
     </div>
 }
+@if (isPopupVisible)
+{
+    <div class="modal fade show" style="display: block;" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Room</h5>
+                    <button type="button" class="btn-close" @onclick="ClosePopup"></button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="currentRoom" OnValidSubmit="@EditRoomSubmit"
+                              class="needs-validation" novalidate>
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        <div class="mb-3">
+                            <label class="form-label">Sensor ID</label>
+                            <InputText @bind-Value="currentRoom.DeviceID"
+                                       class="form-control" id="DeviceID" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="summary" class="form-label">Room name</label>
+                            <InputText @bind-Value="currentRoom.Roomnr"
+                                       class="form-control" id="Roomnr" />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </EditForm>
+                    @if (modalAlert)
+                    {
+                        <div class="alert @modalAlertStatus" role="alert">@modalErrorText</div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade show"></div>
+}
 
 @code {
     [Parameter]
@@ -84,10 +130,19 @@ else
     private List<Reading>? readingsAPI;
     private List<FrontendReading> _readings;
     private Reading? lastReading;
+
     private ApexChart<FrontendReading> chart;
     private ApexChartOptions<FrontendReading> options1;
     private ApexChartOptions<FrontendReading> options2;
+
     private int roomNr;
+
+    private bool isPopupVisible, isDeletePopupVisible = false;
+    private string modalErrorText = "Your room was edited";
+    private string modalAlertStatus = "alert-success";
+    private Room currentRoom = new Room();
+
+    private bool modalAlert = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -95,30 +150,61 @@ else
         options2 = new ApexChartOptions<FrontendReading>();
         chart = new ApexChart<FrontendReading>();
 
+        readingsAPI = new List<Reading>();
         _readings = new List<FrontendReading>();
+        lastReading = new Reading();
         roomNr = roomId;
+
+        await GetCurrentRoom();
 
         await APICall();
         Graph();
     }
 
-    public async void ChangeRoom(ChangeEventArgs e)
+    public async void EditRoomSubmit()
     {
-        if (e.Value != null && int.TryParse(e.Value.ToString(), out _))
-        {
-            roomNr = Convert.ToInt32(e.Value);
-            await APICall();
-        }
+        bool flag = false;
+
+        flag = await APIService.EditRoom(roomNr, currentRoom);
+
+        modalErrorText = flag ? "Your room was edited" : "Your room was not edited";
+        modalAlertStatus = flag ? "alert-success" : "alert-danger";
+        modalAlert = true;
+
+        StateHasChanged();
+        if (flag) { ClosePopup(); }
+
+        StateHasChanged();
+
+
+    }
+
+    private void ClosePopup()
+    {
+        // Close the popup
+        isPopupVisible = false;
+    }
+
+    private void OpenPopup()
+    {
+        modalAlert = false;
+
+        isPopupVisible = true;
+        StateHasChanged();
     }
 
     private async Task APICall()
     {
         readingsAPI = await APIService.GetSensorData(roomNr);
-        lastReading = readingsAPI[readingsAPI.Count - 1];
-        lastReading.Humidity = lastReading.Humidity / 100;
-        lastReading.Temp = lastReading.Temp / 100;
 
-        UnixTimeToDateTime(readingsAPI);
+        if (readingsAPI.Count != 0)
+        {
+            lastReading = readingsAPI[readingsAPI.Count - 1];
+            lastReading.Humidity = lastReading.Humidity / 100;
+            lastReading.Temp = lastReading.Temp / 100;
+
+            UnixTimeToDateTime(readingsAPI);
+        }
     }
 
     private void Graph()
@@ -168,6 +254,18 @@ else
             if (reading.Temp > 100) { reading.Temp = Math.Round((item.Temp / 100), 2); }
             if (reading.Humidity > 100) { reading.Humidity = Math.Round((item.Humidity / 100), 2); }
             _readings.Add(reading);
+        }
+    }
+
+    public async Task GetCurrentRoom()
+    {
+        var allRooms = await APIService.GetRooms();
+        foreach (var item in allRooms)
+        {
+            if (item.ID == roomNr)
+            {
+                currentRoom = item;
+            }
         }
     }
 }

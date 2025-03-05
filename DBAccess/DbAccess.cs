@@ -67,7 +67,8 @@ namespace DBAccess
 
             if (cRoom == null || room == null) { return false; }
 
-            cRoom = room;
+            cRoom.DeviceID = room.DeviceID;
+            cRoom.Roomnr = room.Roomnr;
 
             success = await dBContext.SaveChangesAsync();
 

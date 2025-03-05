@@ -28,13 +28,6 @@ class Program
             .WithCleanSession()
             .Build();
 
-        //Room room = new Room();
-        //room.Roomnr = "qwdfg";
-        //room.Readings = new List<Reading>();
-        //room.DeviceID = "1234567890dcfghj";
-        //BLogic bLogic = new BLogic();
-        //Console.Out.WriteLine(await bLogic.AddNewRoom(room));
-
         // Connect to MQTT broker
         var connectResult = await mqttClient.ConnectAsync(options);
 
@@ -44,6 +37,8 @@ class Program
 
             // Subscribe to a topic
             await mqttClient.SubscribeAsync(topic);
+
+
 
             // Callback function when a message is received
             mqttClient.ApplicationMessageReceivedAsync += e =>
@@ -59,7 +54,7 @@ class Program
                 humidity = Convert.ToDouble(data[5]);
                 time = Convert.ToInt32(data[7]);
 
-                if (co2Level != -1)
+                if (co2Level != -1 && temperature != 0 && humidity != 0)
                 {
                     Reading reading = new Reading();
                     reading.CO2Level = co2Level;
@@ -67,26 +62,12 @@ class Program
                     reading.Humidity = humidity;
                     reading.UnixTime = time;
 
-                    AddReading(reading, 1);
+                    AddReading(reading, data[9]);
                 }
 
                 Console.WriteLine($"Received message: {Encoding.UTF8.GetString(e.ApplicationMessage.PayloadSegment)}");
                 return Task.CompletedTask;
             };
-
-            // Publish a message 10 times
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    var message = new MqttApplicationMessageBuilder()
-            //        .WithTopic(topic)
-            //        .WithPayload($"Hello, MQTT! Message number {i}")
-            //        .WithQualityOfServiceLevel(MqttQualityOfServiceLevel.AtLeastOnce)
-            //        .WithRetainFlag()
-            //        .Build();
-
-            //    await mqttClient.PublishAsync(message);
-            //    await Task.Delay(1000); // Wait for 1 second
-            //}
 
             while (true)
             {
@@ -101,11 +82,20 @@ class Program
             Console.WriteLine($"Failed to connect to MQTT broker: {connectResult.ResultCode}");
         }
 
-        async Task<bool> AddReading(Reading reading, int roomID)
+        async void AddReading(Reading reading, string deviceID)
         {
             BLogic bLogic = new BLogic();
-            bool flag = await bLogic.AddNewReading(reading, roomID);
-            return flag;
+            int roomID;
+            var rooms = await bLogic.GetRooms();
+            foreach (var item in rooms)
+            {
+                if (item.DeviceID == deviceID)
+                {
+                    roomID = item.ID;
+                    bool flag = await bLogic.AddNewReading(reading, roomID);
+                    Console.WriteLine(flag);
+                }
+            }
         }
     }
 }

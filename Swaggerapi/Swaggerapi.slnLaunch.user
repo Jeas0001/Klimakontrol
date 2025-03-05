@@ -4,7 +4,8 @@
     "Projects": [
       {
         "Name": "Swaggerapi.csproj",
-        "Action": "Start"
+        "Action": "Start",
+        "DebugTarget": ""
       },
       {
         "Name": "..\\MQTT\\MQTT.csproj",

@@ -1,5 +1,6 @@
 using Frontend;
 using Frontend.Components;
+using Frontend.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,19 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://
 // My api service
 builder.Services.AddScoped<APIService>();
 
+// AuthenticationService Registration
+builder.Services.AddAuthentication("Cookies")
+    .AddCookie("Cookies", options =>
+    {
+        // Cookie options configuration
+    });
+
+// Register AppState
+builder.Services.AddScoped<AppState>();
+
+// Add services to the container.
+builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents();
 
 var app = builder.Build();
 
