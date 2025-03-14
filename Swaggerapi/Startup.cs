@@ -1,4 +1,7 @@
 ﻿using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Swaggerapi
 {
@@ -14,10 +17,6 @@ namespace Swaggerapi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Sets the connectionstring to the database so dbcontext can find it
-            //services.AddDbContext<DBContext>(options =>
-            //                options.UseMySQL("server=mysql9.dandomain.dk;database=saaapidk_db;user=saaapidk;password=dBSensorPW_081120"));
-
             services.AddControllers();
 
             services.AddCors(options =>
@@ -32,6 +31,20 @@ namespace Swaggerapi
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+            });
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = Configuration["Jwt:Issuer"],
+                    ValidAudience = Configuration["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]!))
+                };
             });
         }
 
@@ -53,6 +66,7 @@ namespace Swaggerapi
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

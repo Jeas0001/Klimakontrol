@@ -1,4 +1,8 @@
 ﻿@using Models;
+@inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
+
+@inject APIService APIService
+@inject Frontend.Services.AppState AppState
 
 @page "/login"
 @rendermode InteractiveServer
@@ -27,6 +31,7 @@
 @code {
     private User currentUser = new User();
 
+
     protected override async Task OnInitializedAsync()
     {
 
@@ -34,6 +39,15 @@
 
     private async void UserLogin()
     {
-        
+        var response = await APIService.Login(currentUser.UserName, currentUser.Password);
+
+        var result = await response.Content.ReadFromJsonAsync<LoginResult>();
+        if (result?.Token != null)
+        {
+            await JSRuntime.InvokeVoidAsync("localStorage.setItem", "authToken", result.Token);
+            AppState.LoggedIn = true;
+            AppState.UserId = result.UserId;
+            navigationManager.NavigateTo("/");
+        }
     }
 }

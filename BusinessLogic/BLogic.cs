@@ -64,5 +64,16 @@ namespace BusinessLogic
             success = await dBAccess.AddFirm(firm);
             return success;
         }
+
+        public async Task<User> Login(User user)
+        {
+            DbAccess dBAccess = new DbAccess();
+
+            var profile = await dBAccess.Login(user.UserName);
+
+            if (profile == null || user.Password != profile.Password) { return new User(); }
+
+            return profile;
+        }
     }
 }

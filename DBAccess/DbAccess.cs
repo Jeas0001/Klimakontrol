@@ -107,5 +107,15 @@ namespace DBAccess
 
             return success == 1;
         }
+
+        public async Task<User> Login(string userName)
+        {
+            using var dBContext = new DBContext();
+            var user = await dBContext.User.FirstOrDefaultAsync(r => r.UserName == userName);
+
+            if (user == null) { return new User(); }
+
+            return user;
+        }
     }
 }
